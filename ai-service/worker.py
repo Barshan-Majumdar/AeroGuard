@@ -11,25 +11,25 @@ from dotenv import load_dotenv
 
 load_dotenv()
 
+from urllib.parse import urlparse
+
 # S3 Configuration
+r2_url_str = os.getenv('CLOUDFLARE_R2_URL', 's3://dummy-key:dummy-secret@dummy-account.r2.cloudflarestorage.com/aeroguard-videos')
+r2_url = urlparse(r2_url_str)
+
 s3 = boto3.client(
     's3',
-    endpoint_url=os.getenv('R2_ENDPOINT'),
-    aws_access_key_id=os.getenv('R2_ACCESS_KEY_ID'),
-    aws_secret_access_key=os.getenv('R2_SECRET_ACCESS_KEY'),
+    endpoint_url=f"https://{r2_url.hostname}",
+    aws_access_key_id=r2_url.username,
+    aws_secret_access_key=r2_url.password,
     region_name='auto'
 )
-bucket_name = os.getenv('R2_BUCKET_NAME', 'aeroguard-videos')
+bucket_name = r2_url.path.strip('/')
 
 # Postgres Configuration
 def get_db_connection():
-    return psycopg2.connect(
-        host=os.getenv('PG_HOST', 'localhost'),
-        database=os.getenv('PG_DATABASE', 'postgres'),
-        user=os.getenv('PG_USER', 'postgres'),
-        password=os.getenv('PG_PASSWORD', 'password'),
-        port=os.getenv('PG_PORT', '5432')
-    )
+    db_url = os.getenv('DATABASE_URL', 'postgresql://postgres:password@localhost:5432/postgres')
+    return psycopg2.connect(db_url)
 
 # YOLO Model Initialization
 print("Loading YOLOv8 model...")
@@ -114,10 +114,15 @@ async def process_video(job: Job, token: str):
         raise e
 
 async def main():
+    redis_url_str = os.getenv("REDIS_URL", "redis://127.0.0.1:6379")
+    r_url = urlparse(redis_url_str)
+    
     redis_opts = {
-        "host": os.getenv("REDIS_HOST", "localhost"),
-        "port": int(os.getenv("REDIS_PORT", "6379")),
+        "host": r_url.hostname or "127.0.0.1",
+        "port": r_url.port or 6379,
     }
+    if r_url.password:
+        redis_opts["password"] = r_url.password
     
     print(f"Starting GPU Worker Node, connecting to Redis at {redis_opts['host']}:{redis_opts['port']}")
     worker = Worker('videoProcessing', process_video, {"connection": redis_opts})

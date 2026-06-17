@@ -14,20 +14,23 @@ app.use(express.json());
 const PORT = process.env.PORT || 3001;
 
 // Cloudflare R2 configuration
+const r2UrlStr = process.env.CLOUDFLARE_R2_URL || 's3://dummy-key:dummy-secret@dummy-account.r2.cloudflarestorage.com/aeroguard-videos';
+const r2Url = new URL(r2UrlStr);
 const s3Client = new S3Client({
   region: 'auto',
-  endpoint: process.env.R2_ENDPOINT || 'https://<ACCOUNT_ID>.r2.cloudflarestorage.com',
+  endpoint: `https://${r2Url.host}`,
   credentials: {
-    accessKeyId: process.env.R2_ACCESS_KEY_ID || 'dummy-key',
-    secretAccessKey: process.env.R2_SECRET_ACCESS_KEY || 'dummy-secret',
+    accessKeyId: r2Url.username,
+    secretAccessKey: r2Url.password,
   },
 });
+const bucketName = r2Url.pathname.replace(/^\//, '');
+
+import Redis from 'ioredis';
 
 // BullMQ configuration
-const connection = {
-  host: process.env.REDIS_HOST || '127.0.0.1',
-  port: parseInt(process.env.REDIS_PORT || '6379'),
-};
+const redisUrl = process.env.REDIS_URL || 'redis://127.0.0.1:6379';
+const connection = new Redis(redisUrl, { maxRetriesPerRequest: null });
 
 const videoQueue = new Queue('videoProcessing', { connection });
 
@@ -42,7 +45,7 @@ app.post('/api/upload/presigned-url', async (req, res) => {
     const key = `uploads/${Date.now()}-${filename}`;
     
     const command = new PutObjectCommand({
-      Bucket: process.env.R2_BUCKET_NAME || 'aeroguard-videos',
+      Bucket: bucketName,
       Key: key,
       ContentType: contentType || 'video/mp4',
     });
