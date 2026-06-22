@@ -383,11 +383,16 @@ function HowItWorks() {
           {steps.map((step) => (
             <div
               key={step.num}
-              className="group card p-6 transition-all duration-standard hover:-translate-y-0.5 hover:shadow-md"
+              className="group card relative overflow-hidden p-6 transition-all duration-standard hover:-translate-y-0.5 hover:scale-[1.02] hover:shadow-md"
             >
-              <span className="mb-3 block font-mono text-[12px] text-accent">{step.num}</span>
-              <h3 className="mb-2 text-[16px] font-bold text-text-primary">{step.title}</h3>
-              <p className="text-[13px] leading-[1.6] text-text-secondary">{step.desc}</p>
+              {/* Premium Glossy Shine Effect */}
+              <div className="pointer-events-none absolute inset-0 -translate-x-full bg-[linear-gradient(110deg,transparent,rgba(255,255,255,0.03)_25%,rgba(255,255,255,0.15)_50%,rgba(255,255,255,0.03)_75%,transparent)] group-hover:transition-transform group-hover:duration-[600ms] group-hover:ease-in-out group-hover:translate-x-full" />
+              
+              <div className="relative z-10">
+                <span className="mb-3 block font-mono text-[12px] text-accent transition-colors duration-[600ms] group-hover:text-white">{step.num}</span>
+                <h3 className="mb-2 text-[16px] font-bold text-text-primary transition-all duration-[600ms] group-hover:text-white group-hover:drop-shadow-[0_0_8px_rgba(255,255,255,0.5)]">{step.title}</h3>
+                <p className="text-[13px] leading-[1.6] text-text-secondary transition-all duration-[600ms] group-hover:text-white group-hover:drop-shadow-[0_0_6px_rgba(255,255,255,0.4)]">{step.desc}</p>
+              </div>
             </div>
           ))}
         </div>
@@ -449,13 +454,18 @@ function Features() {
             return (
               <div
                 key={feature.title}
-                className="group card p-6 transition-all duration-standard hover:-translate-y-0.5 hover:shadow-md"
+                className="group card relative overflow-hidden p-6 transition-all duration-standard hover:-translate-y-0.5 hover:scale-[1.02] hover:shadow-md"
               >
-                <div className="mb-4 flex h-10 w-10 items-center justify-center rounded-md bg-accent-subtle text-accent">
-                  <Icon className="h-5 w-5" />
+                {/* Premium Glossy Shine Effect */}
+                <div className="pointer-events-none absolute inset-0 -translate-x-full bg-[linear-gradient(110deg,transparent,rgba(255,255,255,0.03)_25%,rgba(255,255,255,0.15)_50%,rgba(255,255,255,0.03)_75%,transparent)] group-hover:transition-transform group-hover:duration-[600ms] group-hover:ease-in-out group-hover:translate-x-full" />
+                
+                <div className="relative z-10">
+                  <div className="mb-4 flex h-10 w-10 items-center justify-center rounded-md bg-accent-subtle text-accent transition-colors duration-[600ms] group-hover:bg-white/10 group-hover:text-white">
+                    <Icon className="h-5 w-5" />
+                  </div>
+                  <h3 className="mb-2 text-[16px] font-bold text-text-primary transition-all duration-[600ms] group-hover:text-white group-hover:drop-shadow-[0_0_8px_rgba(255,255,255,0.5)]">{feature.title}</h3>
+                  <p className="text-[13px] leading-[1.6] text-text-secondary transition-all duration-[600ms] group-hover:text-white group-hover:drop-shadow-[0_0_6px_rgba(255,255,255,0.4)]">{feature.desc}</p>
                 </div>
-                <h3 className="mb-2 text-[16px] font-bold text-text-primary">{feature.title}</h3>
-                <p className="text-[13px] leading-[1.6] text-text-secondary">{feature.desc}</p>
               </div>
             );
           })}
