@@ -1,11 +1,11 @@
 'use client';
 
 import { useCallback, useState } from 'react';
-import { Upload, FileVideo, ArrowRight, ArrowLeft, CheckCircle2 } from 'lucide-react';
+import { Upload, FileVideo, ArrowRight, ArrowLeft, CheckCircle2, AlertTriangle } from 'lucide-react';
 import { useInspectionStore } from '@/stores/inspection.store';
 
 export default function VideoUploadZone({ onNext, onBack }: { onNext: () => void; onBack: () => void }) {
-  const { uploadProgress, isUploading, uploadedFile, startUpload } = useInspectionStore();
+  const { uploadProgress, isUploading, uploadedFile, pipelineError, startUpload } = useInspectionStore();
   const [isDragOver, setIsDragOver] = useState(false);
 
   const handleFile = useCallback((file: File) => {
@@ -85,6 +85,13 @@ export default function VideoUploadZone({ onNext, onBack }: { onNext: () => void
           </div>
         )}
       </label>
+
+      {pipelineError && (
+        <div className="animate-slide-up rounded-lg border border-danger/30 bg-danger-subtle px-4 py-3 text-[13px] text-danger flex items-center gap-2">
+          <AlertTriangle className="h-4 w-4 shrink-0 text-danger" />
+          <span>{pipelineError}</span>
+        </div>
+      )}
 
       <div className="flex justify-between pt-2">
         <button onClick={onBack} className="flex items-center gap-2 rounded-md border border-border-default px-4 py-2.5 text-[14px] text-text-secondary transition-colors hover:text-text-primary hover:border-border-strong">

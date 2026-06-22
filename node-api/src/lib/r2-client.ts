@@ -27,6 +27,9 @@ if (!accountId || !accessKeyId || !secretAccessKey) {
 export const r2Client = new S3Client({
   region: 'auto',
   endpoint: `https://${accountId || 'dummy-account'}.r2.cloudflarestorage.com`,
+  forcePathStyle: true,
+  requestChecksumCalculation: 'WHEN_REQUIRED',
+  responseChecksumValidation: 'WHEN_REQUIRED',
   credentials: {
     accessKeyId: accessKeyId || 'dummy-key',
     secretAccessKey: secretAccessKey || 'dummy-secret',

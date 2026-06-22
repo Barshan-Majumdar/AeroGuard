@@ -55,21 +55,26 @@ router.get('/:jobId/stream', async (req: Request, res: Response) => {
     sendEvent('status_update', { status: initialJob.status });
 
     // Initialize BullMQ QueueEvents listener for this specific job
-    const queueEvents = new QueueEvents('video-inspection', { connection: redisConnection });
+    const queueEvents = new QueueEvents('video-inspection', {
+      connection: (redisConnection as any).options,
+    });
 
     const onActive = ({ jobId: activeId }: { jobId: string }) => {
+      console.log(`[QueueEvents] active event: ${activeId} (expecting ${jobId})`);
       if (activeId === jobId) {
         sendEvent('status_update', { status: 'processing' });
       }
     };
 
     const onProgress = ({ jobId: progressId, data: progressVal }: { jobId: string; data: any }) => {
+      console.log(`[QueueEvents] progress event: ${progressId} -> ${progressVal}`);
       if (progressId === jobId) {
         sendEvent('progress', { progress: progressVal });
       }
     };
 
     const onCompleted = ({ jobId: completedId }: { jobId: string }) => {
+      console.log(`[QueueEvents] completed event: ${completedId} (expecting ${jobId})`);
       if (completedId === jobId) {
         sendEvent('status_update', { status: 'completed' });
         sendEvent('job_complete', { message: 'Inference completed. Persisting final metrics.' });
@@ -79,6 +84,7 @@ router.get('/:jobId/stream', async (req: Request, res: Response) => {
     };
 
     const onFailed = ({ jobId: failedId, failedReason }: { jobId: string; failedReason: string }) => {
+      console.log(`[QueueEvents] failed event: ${failedId}. Reason: ${failedReason}`);
       if (failedId === jobId) {
         sendEvent('status_update', { status: 'failed' });
         sendEvent('job_failed', { error: failedReason || 'Job execution failed.' });

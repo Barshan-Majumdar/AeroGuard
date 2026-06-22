@@ -5,7 +5,7 @@ services:
     image: redis:7-alpine
     container_name: aeroguard-redis
     ports:
-      - "6379:6379"
+      - "6380:6379"
     restart: always
 
   inference-service:
@@ -19,7 +19,7 @@ services:
       - YOLO_MODEL_PATH=models/yolov8n.pt
       - CONFIDENCE_THRESHOLD=0.25
       - DEVICE=cpu
-      - REDIS_URL=${REDIS_URL:-redis://redis:6379}
+      - REDIS_URL=redis://redis:6379
       - DATABASE_URL=$DATABASE_URL
       - CLOUDFLARE_R2_URL=$CLOUDFLARE_R2_URL
     depends_on:
@@ -31,7 +31,7 @@ services:
     container_name: aeroguard-node-api-1
     environment:
       - PORT=3001
-      - REDIS_URL=${REDIS_URL:-redis://redis:6379}
+      - REDIS_URL=redis://redis:6379
       - DATABASE_URL=$DATABASE_URL
       - CLOUDFLARE_R2_URL=$CLOUDFLARE_R2_URL
       - R2_ACCOUNT_ID=$R2_ACCOUNT_ID
@@ -50,7 +50,7 @@ services:
     container_name: aeroguard-node-api-2
     environment:
       - PORT=3001
-      - REDIS_URL=${REDIS_URL:-redis://redis:6379}
+      - REDIS_URL=redis://redis:6379
       - DATABASE_URL=$DATABASE_URL
       - CLOUDFLARE_R2_URL=$CLOUDFLARE_R2_URL
       - R2_ACCOUNT_ID=$R2_ACCOUNT_ID
@@ -69,7 +69,7 @@ services:
     container_name: aeroguard-node-api-3
     environment:
       - PORT=3001
-      - REDIS_URL=${REDIS_URL:-redis://redis:6379}
+      - REDIS_URL=redis://redis:6379
       - DATABASE_URL=$DATABASE_URL
       - CLOUDFLARE_R2_URL=$CLOUDFLARE_R2_URL
       - R2_ACCOUNT_ID=$R2_ACCOUNT_ID

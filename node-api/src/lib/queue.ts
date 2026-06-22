@@ -21,6 +21,7 @@ export const videoQueue = new Queue<VideoJobPayload>('video-inspection', {
 export async function addVideoJob(payload: VideoJobPayload) {
   try {
     await videoQueue.add('process-video', payload, {
+      jobId: payload.jobId,
       attempts: 3,
       backoff: {
         type: 'exponential',
