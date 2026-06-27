@@ -4,6 +4,7 @@ import { useState, useEffect } from 'react';
 import TopBar from '@/components/layout/TopBar';
 import { Download, Search, FileText, Loader2 } from 'lucide-react';
 import { DBJob, getJobs, getJobMetrics } from '@/lib/api';
+import FullscreenLoader from '@/components/shared/FullscreenLoader';
 import { generatePDFReport } from '@/lib/pdfGenerator';
 
 const typeBadge = (t: string) => {
@@ -73,10 +74,29 @@ export default function ReportsPage() {
 
         <div className="rounded-lg border border-border-subtle bg-surface overflow-x-auto">
           {loading ? (
-            <div className="flex flex-col items-center justify-center py-12 text-text-tertiary">
-              <Loader2 className="h-6 w-6 animate-spin mb-4" />
-              <p className="text-[13px]">Loading reports...</p>
-            </div>
+            <>
+            <table className="w-full text-left">
+              <thead><tr className="border-b border-border-subtle">
+                {['Report', 'Tail #', 'Date', 'Status', 'Format', 'Size', ''].map((h) => (
+                  <th key={h} className="px-4 py-2.5 text-text-tertiary whitespace-nowrap" style={{ fontSize: '11px', fontWeight: 500, letterSpacing: '0.04em', textTransform: 'uppercase' }}>{h}</th>
+                ))}
+              </tr></thead>
+              <tbody>
+                {[...Array(5)].map((_, i) => (
+                  <tr key={i} className="border-b border-border-subtle last:border-0">
+                    <td className="px-4 py-3"><div className="skeleton h-8 w-32" /></td>
+                    <td className="px-4 py-3"><div className="skeleton h-4 w-16" /></td>
+                    <td className="px-4 py-3"><div className="skeleton h-4 w-24" /></td>
+                    <td className="px-4 py-3"><div className="skeleton h-4 w-16" /></td>
+                    <td className="px-4 py-3"><div className="skeleton h-4 w-8" /></td>
+                    <td className="px-4 py-3"><div className="skeleton h-4 w-12" /></td>
+                    <td className="px-4 py-3"><div className="skeleton h-6 w-20" /></td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+            <FullscreenLoader />
+            </>
           ) : filtered.length === 0 ? (
              <div className="flex flex-col items-center justify-center py-12 text-text-tertiary">
                <FileText className="h-8 w-8 mb-4 opacity-50" />

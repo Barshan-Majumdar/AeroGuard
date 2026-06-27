@@ -22,9 +22,7 @@ export default function SignupPage() {
 
       <div className="relative w-full max-w-[400px] animate-slide-up">
         <div className="mb-8 text-center">
-          <div className="mx-auto mb-4 flex h-10 w-10 items-center justify-center rounded-lg bg-accent text-sm font-bold text-white">
-            A
-          </div>
+          <img src="/logo.png" alt="AeroGuard Logo" className="mx-auto mb-6 h-20 w-20 object-contain drop-shadow-[0_0_24px_rgba(37,99,235,0.4)]" />
           <h1 className="text-[22px] font-medium text-text-primary" style={{ letterSpacing: '-0.015em' }}>
             Request Access
           </h1>

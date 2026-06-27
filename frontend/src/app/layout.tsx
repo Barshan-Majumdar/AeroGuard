@@ -26,6 +26,9 @@ export const metadata: Metadata = {
   description:
     'Edge AI platform for automated aircraft inspection, defect detection, 3D digital twin visualization, and compliance reporting.',
   keywords: ['aircraft inspection', 'AI', 'MRO', 'defect detection', 'digital twin', 'aviation'],
+  icons: {
+    icon: '/logo.png',
+  },
 };
 
 export default function RootLayout({

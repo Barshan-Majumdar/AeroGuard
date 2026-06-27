@@ -9,6 +9,7 @@ import SeverityIndicator from '@/components/shared/SeverityIndicator';
 import { Box, FileText, Flag, Loader2, AlertCircle } from 'lucide-react';
 import { DBJob, DBMetric, getJob, getJobMetrics } from '@/lib/api';
 import { generatePDFReport } from '@/lib/pdfGenerator';
+import FullscreenLoader from '@/components/shared/FullscreenLoader';
 import { DefectSeverity } from '@/types/defect';
 
 function deriveSeverity(confidence: number | null): DefectSeverity {
@@ -80,10 +81,54 @@ export default function InspectionDetailPage() {
     return (
       <div className="min-h-screen bg-base">
         <TopBar title="Inspection Detail" subtitle={jobId} />
-        <div className="flex items-center justify-center p-24">
-          <Loader2 className="h-6 w-6 animate-spin text-accent" />
-          <span className="ml-3 text-[13px] text-text-secondary">Loading inspection...</span>
+        <div className="page-enter p-6 space-y-6">
+          <div className="flex flex-wrap items-start justify-between gap-4 rounded-lg border border-border-subtle bg-surface p-6">
+            <div>
+              <div className="flex items-center gap-3 mb-2">
+                <div className="skeleton h-7 w-48" />
+              </div>
+              <div className="flex gap-6 mt-3">
+                <div className="skeleton h-4 w-20" />
+                <div className="skeleton h-4 w-16" />
+                <div className="skeleton h-4 w-32" />
+              </div>
+            </div>
+            <div className="flex gap-2">
+              <div className="skeleton h-9 w-32 rounded-md" />
+              <div className="skeleton h-9 w-36 rounded-md" />
+              <div className="skeleton h-9 w-32 rounded-md" />
+            </div>
+          </div>
+          <div className="grid grid-cols-2 gap-4 md:grid-cols-5">
+            {[...Array(5)].map((_, i) => (
+              <div key={i} className="rounded-lg border border-border-subtle bg-surface p-4">
+                <div className="skeleton h-3 w-20 mb-2" />
+                <div className="skeleton h-7 w-12" />
+              </div>
+            ))}
+          </div>
+          <div>
+            <div className="skeleton h-5 w-32 mb-4" />
+            <div className="space-y-3">
+              {[...Array(3)].map((_, i) => (
+                <div key={i} className="rounded-lg border border-border-subtle bg-surface p-5">
+                  <div className="flex items-center gap-3 mb-4">
+                    <div className="skeleton h-4 w-24" />
+                    <div className="skeleton h-5 w-16 rounded-full" />
+                  </div>
+                  <div className="grid gap-x-8 gap-y-3 sm:grid-cols-2 lg:grid-cols-3">
+                    <div className="skeleton h-4 w-32" />
+                    <div className="skeleton h-4 w-24" />
+                    <div className="skeleton h-4 w-28" />
+                    <div className="skeleton h-4 w-36" />
+                    <div className="skeleton h-4 w-40" />
+                  </div>
+                </div>
+              ))}
+            </div>
+          </div>
         </div>
+        <FullscreenLoader />
       </div>
     );
   }

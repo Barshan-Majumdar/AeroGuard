@@ -50,14 +50,15 @@ export default function KPICard({ label, value, format, delta, icon: Icon }: KPI
 
   return (
     <div className="rounded-lg border border-border-subtle bg-surface p-5 transition-colors hover:border-border-default">
-      <div className="mb-3 flex items-center justify-between">
+      <div className="mb-3 flex flex-nowrap items-center justify-between gap-2">
         <span
-          className="text-text-tertiary"
+          className="text-text-tertiary truncate"
           style={{ fontSize: '11px', fontWeight: 500, letterSpacing: '0.04em', textTransform: 'uppercase' }}
+          title={label}
         >
           {label}
         </span>
-        <Icon className="h-4 w-4 text-text-tertiary" />
+        <Icon className="h-4 w-4 shrink-0 text-text-tertiary" />
       </div>
 
       <div className="mb-2 text-[28px] font-medium leading-none tracking-tight text-text-primary">

@@ -3,6 +3,7 @@
 import { useUIStore } from '@/stores/ui.store';
 import Sidebar from './Sidebar';
 import CommandPalette from './CommandPalette';
+import RouteTransitionOverlay from './RouteTransitionOverlay';
 import { cn } from '@/lib/utils';
 
 interface AppShellProps {
@@ -19,10 +20,11 @@ export default function AppShell({ children }: AppShellProps) {
 
       <main
         className={cn(
-          'flex-1 transition-all duration-standard ease-standard',
+          'relative flex-1 transition-all duration-standard ease-standard',
           sidebarExpanded ? 'lg:ml-[240px]' : 'lg:ml-[60px]'
         )}
       >
+        <RouteTransitionOverlay />
         {children}
       </main>
     </div>

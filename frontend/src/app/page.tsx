@@ -32,16 +32,14 @@ function Nav() {
 
   return (
     <nav
-      className={`fixed top-0 left-0 right-0 z-50 flex h-[56px] items-center justify-between px-6 transition-all duration-300 ${scrolled
-          ? 'glass-nav border-b border-border-subtle'
+      className={`fixed top-0 left-0 right-0 z-50 flex h-[100px] items-center justify-between px-8 transition-all duration-300 ${scrolled
+          ? 'glass-nav border-b border-border-subtle shadow-lg'
           : 'bg-transparent'
         }`}
     >
-      <div className="flex items-center gap-2">
-        <div className="flex h-7 w-7 items-center justify-center rounded-md bg-accent text-xs font-bold text-white">
-          A
-        </div>
-        <span className="text-[15px] font-bold text-text-primary">AeroGuard</span>
+      <div className="flex items-center gap-4">
+        <img src="/logo.png" alt="AeroGuard Logo" className="h-20 w-20 object-contain drop-shadow-[0_0_12px_rgba(37,99,235,0.6)]" />
+        <span className="text-[22px] font-bold text-text-primary tracking-wide">AeroGuard</span>
       </div>
       <div className="flex items-center gap-3">
         <Link

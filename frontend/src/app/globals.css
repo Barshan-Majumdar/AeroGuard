@@ -64,7 +64,7 @@
   --radius-xl: 12px;
 
   /* Typography */
-  --font-display: var(--font-inter), 'SF Pro Display', system-ui, sans-serif;
+  --font-display: var(--font-google-sans), 'SF Pro Display', system-ui, sans-serif;
   --font-mono:    var(--font-jetbrains-mono), 'Fira Code', monospace;
 
   /* Shadows */
@@ -185,7 +185,7 @@ body {
 
 .skeleton {
   background: linear-gradient(
-    90deg,
+    110deg,
     var(--bg-surface) 25%,
     var(--bg-elevated) 50%,
     var(--bg-surface) 75%

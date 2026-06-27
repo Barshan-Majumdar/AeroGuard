@@ -11,6 +11,7 @@ import HeatmapLegend from '@/components/twin/HeatmapLegend';
 import { getJob, getJobMetrics, DBMetric } from '@/lib/api';
 import { useTwinStore } from '@/stores/twin.store';
 import { Defect, DefectSeverity, DefectType } from '@/types/defect';
+import FullscreenLoader from '@/components/shared/FullscreenLoader';
 import { ArrowLeft, Loader2, Box } from 'lucide-react';
 
 const EngineViewer = dynamic(() => import('@/components/twin/EngineViewer'), {
@@ -137,9 +138,18 @@ export default function DigitalTwinPage() {
 
         <div className="flex-1 overflow-y-auto p-3 space-y-1.5">
           {loading ? (
-            <div className="flex items-center justify-center p-8">
-              <Loader2 className="h-4 w-4 animate-spin text-accent" />
-              <span className="ml-2 text-[12px] text-text-tertiary">Loading...</span>
+            <div className="space-y-1.5 p-2">
+              <div className="skeleton h-3 w-20 mb-3" />
+              {[...Array(6)].map((_, i) => (
+                <div key={i} className="rounded-md border border-border-subtle p-3">
+                  <div className="flex items-center justify-between mb-1">
+                    <div className="skeleton h-3 w-16" />
+                    <div className="skeleton h-4 w-12 rounded-full" />
+                  </div>
+                  <div className="skeleton h-3 w-24 mb-1" />
+                  <div className="skeleton h-2 w-16" />
+                </div>
+              ))}
             </div>
           ) : (
             <>
@@ -172,8 +182,8 @@ export default function DigitalTwinPage() {
       {/* Right panel — 3D Viewer */}
       <main className="flex-1 relative">
         {loading ? (
-          <div className="absolute inset-0 flex items-center justify-center bg-base">
-            <Loader2 className="h-6 w-6 animate-spin text-accent" />
+          <div className="absolute inset-0 flex items-center justify-center bg-base p-6">
+            <div className="skeleton h-full w-full rounded-xl" />
           </div>
         ) : !aircraftModel || !['boeing 737', 'airbus a320'].some(m => aircraftModel.toLowerCase().includes(m)) ? (
           <div className="absolute inset-0 flex items-center justify-center bg-base flex-col gap-4">
@@ -200,6 +210,7 @@ export default function DigitalTwinPage() {
       {panelOpen && selectedDefect && (
         <DefectPanel defect={selectedDefect} />
       )}
+      {loading && <FullscreenLoader />}
     </div>
   );
 }

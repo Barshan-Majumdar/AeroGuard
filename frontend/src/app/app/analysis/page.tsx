@@ -5,6 +5,7 @@ import TopBar from '@/components/layout/TopBar';
 import { AreaChart, Area, LineChart, Line, XAxis, YAxis, Tooltip, ResponsiveContainer } from 'recharts';
 import { getJobs, DBJob } from '@/lib/api';
 import StatusDot from '@/components/shared/StatusDot';
+import FullscreenLoader from '@/components/shared/FullscreenLoader';
 import { Loader2 } from 'lucide-react';
 
 const predictiveData = Array.from({ length: 20 }, (_, i) => ({
@@ -102,10 +103,41 @@ export default function AnalysisPage() {
     return (
       <div className="min-h-screen bg-base">
         <TopBar title="Analysis" subtitle="Defect trends, predictions, and fleet health monitoring" />
-        <div className="flex items-center justify-center p-24">
-          <Loader2 className="h-6 w-6 animate-spin text-accent" />
-          <span className="ml-3 text-[13px] text-text-secondary">Loading analysis...</span>
+        <div className="page-enter p-6 space-y-6">
+          <div className="rounded-lg border border-border-subtle bg-surface p-5">
+            <div className="flex items-center justify-between mb-4">
+              <div className="skeleton h-5 w-32" />
+              <div className="skeleton h-8 w-24" />
+            </div>
+            <div className="skeleton h-[320px] w-full" />
+          </div>
+          <div className="grid gap-6 lg:grid-cols-2">
+            <div className="rounded-lg border border-border-subtle bg-surface p-5">
+              <div className="skeleton h-5 w-48 mb-4" />
+              <div className="skeleton h-[280px] w-full" />
+            </div>
+            <div className="rounded-lg border border-border-subtle bg-surface p-5">
+              <div className="skeleton h-5 w-32 mb-4" />
+              <div className="grid gap-3 sm:grid-cols-2">
+                {[...Array(4)].map((_, i) => (
+                  <div key={i} className="rounded-md border border-border-subtle bg-elevated p-3">
+                    <div className="flex items-center justify-between mb-2">
+                      <div className="skeleton h-4 w-20" />
+                      <div className="skeleton h-3 w-3 rounded-full" />
+                    </div>
+                    <div className="skeleton h-8 w-16 mb-1" />
+                    <div className="flex justify-between">
+                      <div className="skeleton h-3 w-16" />
+                      <div className="skeleton h-3 w-16" />
+                    </div>
+                    <div className="skeleton mt-2 h-1.5 w-full rounded-full" />
+                  </div>
+                ))}
+              </div>
+            </div>
+          </div>
         </div>
+        <FullscreenLoader />
       </div>
     );
   }

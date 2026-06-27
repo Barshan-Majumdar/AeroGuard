@@ -3,6 +3,7 @@
 import { useEffect, useState } from 'react';
 import Link from 'next/link';
 import TopBar from '@/components/layout/TopBar';
+import FullscreenLoader from '@/components/shared/FullscreenLoader';
 import { getJobs, DBJob } from '@/lib/api';
 import { Search, ChevronLeft, ChevronRight, Filter, Loader2 } from 'lucide-react';
 
@@ -104,10 +105,31 @@ export default function HistoryPage() {
           </div>
 
           {loading ? (
-            <div className="flex items-center justify-center p-24">
-              <Loader2 className="h-6 w-6 animate-spin text-accent" />
-              <span className="ml-3 text-[13px] text-text-secondary">Loading inspections...</span>
+            <>
+            <div className="rounded-lg border border-border-subtle bg-surface overflow-hidden">
+              <table className="w-full text-left">
+                <thead>
+                  <tr className="border-b border-border-subtle">
+                    {['Job ID', 'File', 'Created', 'Defects', 'Status'].map((h) => (
+                      <th key={h} className="px-4 py-2.5 text-text-tertiary whitespace-nowrap" style={{ fontSize: '11px', fontWeight: 500, letterSpacing: '0.04em', textTransform: 'uppercase' }}>{h}</th>
+                    ))}
+                  </tr>
+                </thead>
+                <tbody>
+                  {[...Array(5)].map((_, i) => (
+                    <tr key={i} className="border-b border-border-subtle last:border-0">
+                      <td className="px-4 py-3"><div className="skeleton h-4 w-16" /></td>
+                      <td className="px-4 py-3"><div className="skeleton h-4 w-32" /></td>
+                      <td className="px-4 py-3"><div className="skeleton h-4 w-24" /></td>
+                      <td className="px-4 py-3"><div className="skeleton h-4 w-8" /></td>
+                      <td className="px-4 py-3"><div className="skeleton h-4 w-16" /></td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
             </div>
+            <FullscreenLoader />
+          </>
           ) : (
             <>
               <div className="rounded-lg border border-border-subtle bg-surface overflow-x-auto">
