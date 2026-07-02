@@ -36,7 +36,7 @@ export default function DashboardPage() {
     // Poll every 5 seconds
     const interval = setInterval(() => fetchJobs(false), 5000);
     return () => clearInterval(interval);
-  }, []);
+  }, [setGlobalLoading]);
 
   const totalJobs = jobs.length;
   const completedJobs = jobs.filter((j) => j.status === 'completed').length;

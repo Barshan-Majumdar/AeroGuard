@@ -48,7 +48,7 @@ export default function HistoryPage() {
     // Poll every 5 seconds to keep status up to date
     const interval = setInterval(() => fetchJobs(false), 5000);
     return () => clearInterval(interval);
-  }, []);
+  }, [setGlobalLoading]);
 
   const filtered = jobs.filter((job) => {
     if (search) {
